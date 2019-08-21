@@ -10,7 +10,7 @@ function machine(name) {
   this.logs = []
   this.logs.push(`start ${name}`)
 }
-machine.prototype.execute = async function() {
+machine.prototype.execute = async function () {
   //async + await
   const logs = this.logs
   if (logs.length > 0) {
@@ -23,23 +23,23 @@ machine.prototype.execute = async function() {
     }
   }
 }
-machine.prototype.do = function(argument) {
+machine.prototype.do = function (argument) {
   this.logs.push(`${this.name} ${argument}`)
   return this
 }
 
-machine.prototype.wait = function(item) {
+machine.prototype.wait = function (item) {
   this.logs.push(machine.defer(item))
   return this
 }
 
-machine.prototype.waitFirst = function(item) {
+machine.prototype.waitFirst = function (item) {
   this.logs.unshift(machine.defer(item))
   return this
 }
-machine.defer = function(time) {
+machine.defer = function (time) {
   const times = time
-  return function() {
+  return function () {
     console.log(`wait ${times}s`)
     return new Promise(resolve => {
       // promise
@@ -141,7 +141,7 @@ function Cat(name, color) {
 }
 
 function extend(Child, Parent) {
-  var F = function() {}
+  var F = function () {}
   F.prototype = Parent.prototype
   Child.prototype = new F()
   Child.prototype.constructor = Child
@@ -232,7 +232,7 @@ if (window.XMLHttpRequest) {
 request.open('GET', url)
 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded') // post请求需要设置
 request.send(data) // post请求需要send一个data。get请求这个参数为null
-request.onload = function() {
+request.onload = function () {
   request.status = 200 ? success(request.responseText) : failed(xhr.status)
 }
 // 2. 跨域之jsonp
@@ -244,7 +244,7 @@ function jsonp(url, cb_key, data) {
   return new Promise((resolve, reject) => {
     // 使用cb_key创建一个绑定在window上的全局函数,这个函数体中调用resolve。该函数会使用后台返回的函数调用语句的字符串形式进行调用
     var cb_name = 'jyf' + Date.now()
-    window[cb_name] = function(res) {
+    window[cb_name] = function (res) {
       resolve(res)
     }
     // 创建一个script标签，将url放入这个script标签的src属性中
@@ -256,7 +256,7 @@ function jsonp(url, cb_key, data) {
     }
     script.src = url
     document.body.appendChild(script)
-    script.onload = function() {
+    script.onload = function () {
       this.remove()
     }
   })
@@ -266,12 +266,46 @@ function jsonp(url, cb_key, data) {
 /**
  * 四、正则practice
  */
+RegExp.test(string)
+RegExp.exec(string) // 返回结果是数组。若RegExp不带/g全局匹配，则返回匹配成功的第一个；若带/g，则返回所有匹配成功的
 
+string.replace(pattern, string)
+string.match(pattern)
+
+// 正数
+var str = /^[0-9]+$/
+// 小数
+var str = /^\-?[0-9]*\.?[0-9]*$/
+// 整数
+var str = /-?[0-9]+$/
+// 给一个连字符串例如：get-element-by-id转化成驼峰形式
+var str = 'get-element-by-id'
+var reg = /-\w/g
+console.log(
+  str.replace(reg, function ($0) {
+    return $0.slice(1).toUpperCase()
+  })
+)
+// 固定电话
+var str = "000-12344562";
+var reg = /\(?0\d{2}[) -]?\d{8}/g; // \(? 匹配左括号一次或0次然后以0开头后面加两个数字，再匹配右括号或空格或减号一次或0次，随后匹配8个数字
+console.log(str.match(reg));
+// 匹配用尖括号括起来的以a开头的字符串
+var str = "<a herf='www.baidu.com'>";
+var reg = /<a[^>]+>/g;
+console.log(str.match(reg));
+
+// 分割数字每三个以一个逗号划分
+var str = "12345678901"
+//(\d{3})+$ 的意思是连续匹配 3 个数字，且最后一次匹配以 3 个数字结尾。
+//要找到所有的单个字符，这些字符的后面跟随的字符的个数必须是3的倍数，并在符合条件的单个字符后面添加,
+var reg = /(\d)(?=(\d{3})+$)/g
+console.log(str.replace(reg, '$1,'));
 /**
  * 五、实现高阶函数系列
  */
 // 1. call apply bind
-Function.prototype.myCall = function(context) {
+Function.prototype.myCall = function (context) {
   if (typeof this !== 'function') {
     throw new TypeError('Error')
   }
@@ -282,7 +316,7 @@ Function.prototype.myCall = function(context) {
   delete context.fn
   return rs
 }
-Function.prototype.myApply = function(context) {
+Function.prototype.myApply = function (context) {
   if (typeof this !== 'function') {
     throw new TypeError('Error')
   }
@@ -298,7 +332,7 @@ Function.prototype.myApply = function(context) {
   return result
 }
 // bind由于会返回一个函数，而函数的调用若是new方式调用的话，this是不可被改变的
-Function.prototype.myBind = function(context) {
+Function.prototype.myBind = function (context) {
   if (typeof this !== 'function') {
     throw new TypeError('Error')
   }
@@ -348,7 +382,7 @@ function myInstanceof(left, right) {
 // 4. 去抖节流
 const debounce = (func, wait = 50) => {
   let timer = null
-  return function(...args) {
+  return function (...args) {
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => {
       func.apply(this, args)
@@ -358,7 +392,7 @@ const debounce = (func, wait = 50) => {
 // 定时器节流
 const throttle1 = (func, wait = 50) => {
   let timer = null
-  return function(...args) {
+  return function (...args) {
     if (timer === null) return
     timer = setTimeout(() => {
       func.apply(this, args)
@@ -369,7 +403,7 @@ const throttle1 = (func, wait = 50) => {
 const throttle2 = (func, wait = 50) => {
   // 上一次执行该函数的时间
   let lastTime = 0
-  return function(...args) {
+  return function (...args) {
     // 当前时间
     let now = +new Date()
     // 将当前时间和上一次执行函数时间对比
@@ -387,6 +421,7 @@ function deepClone1(obj) {
     objClone = JSON.parse(_obj)
   return objClone
 }
+
 function deepClone2(obj) {
   let clone = {}
   for (let attr in obj) {
@@ -401,7 +436,35 @@ function deepClone2(obj) {
   return clone
 }
 // 6. js异步（generator async promise)
-
+// 6.1 iterator
+function myCreateIterator(iterms) {
+  let i = 0
+  return {
+    next() {
+      let done = (i >= iterms.length)
+      let value = !done ? iterms[i++] : undefined
+      return {
+        done,
+        value
+      }
+    }
+  }
+}
+let ai = myCreateIterator([1, 2, 3])
+console.log(ai.next());
+console.log(ai.next());
+console.log(ai.next());
+console.log(ai.next());
+// 6.2 generator
+function* foo(x) {
+  let y = 2 * (yield(x + 1))
+  let z = yield(y / 3)
+  return (x + y + z)
+}
+let it = foo(5)
+console.log(it.next()) // => {value: 6, done: false}
+console.log(it.next(12)) // => {value: 8, done: false}
+console.log(it.next(13)) // => {value: 42, done: true}
 /**
  * 六、事件循环
  */
