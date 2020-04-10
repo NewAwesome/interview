@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+      border: 10px solid #ddd;
+      border-image: -webkit-linear-gradient(#ddd, #000) 30 30;
+      border-image: -moz-linear-gradient(#ddd, #000) 30 30;
+      border-image: linear-gradient(#ddd, #000) 30 30;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <script>
+    localStorage.setItem('show', false);
+    console.log(localStorage.show || '显示')
+  </script>
+</body>
+
+</html>
